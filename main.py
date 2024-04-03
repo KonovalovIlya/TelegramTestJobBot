@@ -1,14 +1,13 @@
 from time import sleep
-import time
-
 from telebot import TeleBot
 from telebot.types import Message
-from countryinfo import CountryInfo
+from datetime import datetime
+import pytz     #   pip install pytz
 
 
+moscow_time = datetime.now(pytz.timezone('Europe/Moscow')).strftime('%H')
+# print(moscow_time)
 tb = TeleBot(token='7012017137:AAHAN3aNP032eItm8FZGhXoZ9zTN4fSA0Nw')
-country = CountryInfo('Russia')
-time.
 
 
 @tb.message_handler(commands=['start'])
@@ -18,9 +17,13 @@ def welcome(message: Message):
     sleep(5)
     tb.send_message(message.chat.id, 'Picture gallery message')
     sleep(5)
-    msk_time =
-    tb.send_message(message.chat.id, 'Picture gallery message')
+    # msk_time =
+    if int(moscow_time) < 13:
+        tb.send_message(message.chat.id, 'Moscow time < 13')
+    else:
+        tb.send_message(message.chat.id, 'Moscow time > 13')
 
 
-if __name__ == 'main':
-    tb.polling(non_stop=True)
+tb.polling(non_stop=True)
+# if __name__ == 'main':
+#     pass
