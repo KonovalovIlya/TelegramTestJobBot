@@ -18,6 +18,7 @@ polls = {}
 
 
 def send_poll(chat_id):
+    """Отправляет опросы в зависимости от времени в МСК"""
     q_list = ['Первая строка', 'Вторая строка', 'Третья строка', 'Четвертая строка']
     if int(moscow_time) < 13:
         tb.send_poll(
@@ -40,6 +41,7 @@ def send_poll(chat_id):
 
 
 def send_photo_gallery(chat_id):
+    """Отправляет галерею фоток"""
     media_group = []
     for i in image_list:
         media_group.append(types.InputMediaPhoto(media=i))
@@ -50,6 +52,7 @@ def send_photo_gallery(chat_id):
 @tb.message_handler(commands=['start'])
 def wellcome(message: Message):
     """Приветствует пользователя"""
+    chat_id = message.chat.id
     tb.send_message(message.chat.id, 'Привет')
     sleep(5)
     send_photo_gallery(message.chat.id)
@@ -67,12 +70,6 @@ def handle_poll_answer(poll_answer: types.PollAnswer):
         polls[poll_id][user_id] = answers
     else:
         polls[poll_id] = {user_id: answers}
-
-
-@tb.poll_handler(lambda active_poll: active_poll.is_closed is True)
-def just_poll_answer(active_poll: types.Poll):
-    global polls
-    print(polls)
 
 
 tb.polling(non_stop=True)
